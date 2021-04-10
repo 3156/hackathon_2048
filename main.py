@@ -63,12 +63,25 @@ def showTiles():
     tile.createTile()
 
 def moveTiles(course):
-  if course == 'Right':
-    for tile in tiles:
-      if tile.x < TILE_X_COUNT - 1:
-        print(tile.number)
-  elif course == 'Left':
+  if course == 'Left':
     moveLeft()
+    showTiles()
+  elif course == 'Right':
+    reverseMatrix()
+    moveLeft()
+    reverseMatrix()
+    showTiles()
+  elif course == 'Up':
+    switchMatrix()
+    moveLeft()
+    switchMatrix()
+    showTiles()
+  elif course == 'Down':
+    switchMatrix()
+    reverseMatrix()
+    moveLeft()
+    reverseMatrix()
+    switchMatrix()
     showTiles()
 
 def switchMatrix():
@@ -76,6 +89,14 @@ def switchMatrix():
   _array = []
   for i in range(len(positions[0])):
     _array.append( [n[i] for n in positions] )
+  positions = _array
+
+def reverseMatrix():
+  global positions
+  _array = []
+  for position_y in positions:
+    position_y.reverse()
+    _array.append( position_y )
   positions = _array
 
 def moveLeft():
@@ -118,13 +139,6 @@ def play():
   set_field()
 
   showTiles()
-
-  #print(positions)
-  #switchMatrix()
-  #print(positions)
-  #switchMatrix()
-  #print(positions)
-
 
   root.bind("<Key>", lambda event: operate(event))
   root.mainloop()
