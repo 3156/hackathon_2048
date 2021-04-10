@@ -1,5 +1,6 @@
 import tkinter as tk
 import math
+import random
 
 canvas = None
 
@@ -61,6 +62,7 @@ def moveTiles(course):
     reverseMatrix()
 
   moveLeft()
+  appearTile()
 
   if course == 'Right':
     reverseMatrix()
@@ -96,8 +98,12 @@ def moveLeft():
     _array.append( [i for i in position_y if i != 0] + [0 for i in range(zero_count)] )
   positions = _array
 
-
-
+def appearTile():
+  global positions
+  count_x = len(positions[0])
+  _array = [n[count_x-1] for n in positions]
+  new_tile_index = random.randint(0, _array.count(0)-1)
+  positions[new_tile_index][count_x-1] = random.choice([2, 4])
 
 def set_field():
   canvas.create_rectangle(POSITION["x"], POSITION["y"], LENGTH_X + POSITION["x"], LENGTH_Y + POSITION["y"], fill='#cbbeb5', width=BORDER_WIDTH, outline=BORDER_COLOR)
