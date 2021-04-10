@@ -18,11 +18,6 @@ BORDER_COLOR = '#b2a698'
 tiles = []
 positions = [[0] * TILE_X_COUNT for i in range(TILE_Y_COUNT)]
 
-positions[0][1] = 2
-positions[1][3] = 4
-positions[2][2] = 8
-positions[0][4] = 16
-
 class Tile:
   def __init__(self, x, y, number):
     self.x = x
@@ -34,6 +29,13 @@ class Tile:
     center_y = POSITION["y"] + BORDER_WIDTH * self.y + BORDER_WIDTH / 2 + SQUARE_LENGTH * self.y + SQUARE_LENGTH / 2
     canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0, tag='tile')
     canvas.create_text(center_x, center_y, text=self.number, justify="center", font=("", 70), tag="number")
+
+def setInitialize():
+  global positions
+  _tile_x = random.randint(0, TILE_X_COUNT - 1)
+  _tile_y = random.randint(0, TILE_Y_COUNT - 1)
+  positions[_tile_y][_tile_x] = random.choice([2, 4])
+
 
 def removeTiles():
   canvas.delete('tile')
@@ -143,6 +145,8 @@ def play():
   root, canvas = create_canvas()
   set_field()
 
+  setInitialize()
+  setInitialize()
   showTiles()
 
   root.bind("<Key>", lambda event: operate(event))
