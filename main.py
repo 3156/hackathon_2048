@@ -34,17 +34,6 @@ class Tile:
     canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0, tag='tile')
     canvas.create_text(center_x, center_y, text=self.number, justify="center", font=("", 70), tag="number")
 
-def setTiles():
-  global tiles
-  for i in range(TILE_X_COUNT):
-    for j in range(TILE_Y_COUNT):
-      tiles.append( Tile(i, j, 2) )
-
-def createTiles():
-  setTiles()
-  for tile in tiles:
-    tile.createTile()
-
 def removeTiles():
   canvas.delete('tile')
   canvas.delete('number')
