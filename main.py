@@ -31,8 +31,8 @@ class Tile:
   def createTile(self):
     center_x = POSITION["x"] + BORDER_WIDTH * self.x + BORDER_WIDTH / 2 + SQUARE_LENGTH * self.x + SQUARE_LENGTH / 2
     center_y = POSITION["y"] + BORDER_WIDTH * self.y + BORDER_WIDTH / 2 + SQUARE_LENGTH * self.y + SQUARE_LENGTH / 2
-    canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0)
-    canvas.create_text(center_x, center_y, text=self.number, justify="center", font=("", 70), tag="count_text")
+    canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0, tag='tile')
+    canvas.create_text(center_x, center_y, text=self.number, justify="center", font=("", 70), tag="number")
 
 def setTiles():
   global tiles
@@ -46,6 +46,8 @@ def createTiles():
     tile.createTile()
 
 def removeTiles():
+  canvas.delete('tile')
+  canvas.delete('number')
   del tiles[:]
 
 def positionToTiles():
@@ -59,6 +61,33 @@ def showTiles():
   positionToTiles()
   for tile in tiles:
     tile.createTile()
+
+def moveTiles(course):
+  if course == 'Right':
+    for tile in tiles:
+      if tile.x < TILE_X_COUNT - 1:
+        print(tile.number)
+  elif course == 'Left':
+    moveLeft()
+    showTiles()
+
+def switchMatrix():
+  global positions
+  _array = []
+  for i in range(len(positions[0])):
+    _array.append( [n[i] for n in positions] )
+  positions = _array
+
+def moveLeft():
+  global positions
+  _array = []
+  for position_y in positions:
+    zero_count = position_y.count(0)
+    _array.append( [i for i in position_y if i != 0] + [0 for i in range(zero_count)] )
+  positions = _array
+
+
+
 
 def set_field():
   canvas.create_rectangle(POSITION["x"], POSITION["y"], LENGTH_X + POSITION["x"], LENGTH_Y + POSITION["y"], fill='#cbbeb5', width=BORDER_WIDTH, outline=BORDER_COLOR)
@@ -81,6 +110,7 @@ def create_canvas():
 
 def operate(event):
   print(event.keysym)
+  moveTiles(event.keysym)
 
 def play():
   global canvas
@@ -88,6 +118,13 @@ def play():
   set_field()
 
   showTiles()
+
+  #print(positions)
+  #switchMatrix()
+  #print(positions)
+  #switchMatrix()
+  #print(positions)
+
 
   root.bind("<Key>", lambda event: operate(event))
   root.mainloop()
