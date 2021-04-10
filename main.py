@@ -52,26 +52,26 @@ def showTiles():
     tile.createTile()
 
 def moveTiles(course):
-  if course == 'Left':
-    moveLeft()
-    showTiles()
-  elif course == 'Right':
+  if course == 'Right':
     reverseMatrix()
-    moveLeft()
-    reverseMatrix()
-    showTiles()
   elif course == 'Up':
     switchMatrix()
-    moveLeft()
-    switchMatrix()
-    showTiles()
   elif course == 'Down':
     switchMatrix()
     reverseMatrix()
-    moveLeft()
+
+  moveLeft()
+
+  if course == 'Right':
+    reverseMatrix()
+  elif course == 'Up':
+    switchMatrix()
+  elif course == 'Down':
     reverseMatrix()
     switchMatrix()
-    showTiles()
+
+  showTiles()
+
 
 def switchMatrix():
   global positions
