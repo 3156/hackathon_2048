@@ -2,17 +2,41 @@ import tkinter as tk
 import math
 
 canvas = None
+tiles = []
 
 SQUARE_LENGTH = 100
 RADIUS = SQUARE_LENGTH / 2 - 5
 POSITION = {"x": 8, "y": 8}
 BORDER_WIDTH = 8
-TILE_X_COUNT = 2
-TILE_Y_COUNT = 6
+TILE_X_COUNT = 5
+TILE_Y_COUNT = 3
 LENGTH_X = SQUARE_LENGTH * TILE_X_COUNT + BORDER_WIDTH * TILE_X_COUNT
 LENGTH_Y = SQUARE_LENGTH * TILE_Y_COUNT + BORDER_WIDTH * TILE_Y_COUNT
 CELL_COLOR = '#cbbeb5'
 BORDER_COLOR = '#b2a698'
+
+class Tile:
+  def __init__(self, x, y, number):
+    self.x = x
+    self.y = y
+    self.number = number
+
+  def createTile(self, x, y):
+    center_x = POSITION["x"] + BORDER_WIDTH * x + BORDER_WIDTH / 2 + SQUARE_LENGTH * x + SQUARE_LENGTH / 2
+    center_y = POSITION["y"] + BORDER_WIDTH * y + BORDER_WIDTH / 2 + SQUARE_LENGTH * y + SQUARE_LENGTH / 2
+    canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0)
+    canvas.create_text(center_x, center_y, text=0, justify="center", font=("", 70), tag="count_text")
+
+def setTiles():
+  global tiles
+  for i in range(TILE_X_COUNT):
+    for j in range(TILE_Y_COUNT):
+      tiles.append( Tile(i, j, 2) )
+
+def createTiles():
+  setTiles()
+  for tile in tiles:
+    tile.createTile(tile.x, tile.y)
 
 def set_field():
   canvas.create_rectangle(POSITION["x"], POSITION["y"], LENGTH_X + POSITION["x"], LENGTH_Y + POSITION["y"], fill='#cbbeb5', width=BORDER_WIDTH, outline=BORDER_COLOR)
@@ -33,12 +57,6 @@ def create_canvas():
 
   return root, canvas
 
-def set_number(num, x, y):
-  center_x = POSITION["x"] + BORDER_WIDTH * x + BORDER_WIDTH / 2 + SQUARE_LENGTH * x + SQUARE_LENGTH / 2
-  center_y = POSITION["y"] + BORDER_WIDTH * y + BORDER_WIDTH / 2 + SQUARE_LENGTH * y + SQUARE_LENGTH / 2
-  canvas.create_rectangle(center_x - SQUARE_LENGTH / 2, center_y - SQUARE_LENGTH / 2, center_x + SQUARE_LENGTH / 2, center_y + SQUARE_LENGTH / 2, fill=CELL_COLOR, width=0)
-  canvas.create_text(center_x, center_y, text=num, justify="center", font=("", 70), tag="count_text")
-
 def operate(event):
   print(event.keysym)
 
@@ -46,8 +64,9 @@ def play():
   global canvas
   root, canvas = create_canvas()
   set_field()
-  set_number("2", 0, 3)
-  set_number("4", 2, 1)
+
+  createTiles()
+
   root.bind("<Key>", lambda event: operate(event))
   root.mainloop()
 
