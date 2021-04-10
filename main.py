@@ -62,6 +62,7 @@ def moveTiles(course):
     reverseMatrix()
 
   moveLeft()
+  calcTile()
   appearTile()
 
   if course == 'Right':
@@ -73,7 +74,6 @@ def moveTiles(course):
     switchMatrix()
 
   showTiles()
-
 
 def switchMatrix():
   global positions
@@ -97,6 +97,16 @@ def moveLeft():
     zero_count = position_y.count(0)
     _array.append( [i for i in position_y if i != 0] + [0 for i in range(zero_count)] )
   positions = _array
+
+def calcTile():
+  global positions
+  for y, position_y in enumerate(positions):
+    pre_number = 0
+    for x, number in enumerate(position_y):
+      if number == pre_number:
+        positions[y][x-1] = number * 2
+        positions[y][x] = 0
+      pre_number = number
 
 def appearTile():
   global positions
