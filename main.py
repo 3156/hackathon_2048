@@ -7,25 +7,28 @@ SQUARE_LENGTH = 100
 RADIUS = SQUARE_LENGTH / 2 - 5
 POSITION = {"x": 8, "y": 8}
 BORDER_WIDTH = 8
-NUMBER = 4
-LENGTH = SQUARE_LENGTH * NUMBER + BORDER_WIDTH * NUMBER
+TILE_X_COUNT = 2
+TILE_Y_COUNT = 6
+LENGTH_X = SQUARE_LENGTH * TILE_X_COUNT + BORDER_WIDTH * TILE_X_COUNT
+LENGTH_Y = SQUARE_LENGTH * TILE_Y_COUNT + BORDER_WIDTH * TILE_Y_COUNT
 CELL_COLOR = '#cbbeb5'
 BORDER_COLOR = '#b2a698'
 
 def set_field():
-  canvas.create_rectangle(POSITION["x"], POSITION["y"], LENGTH + POSITION["x"], LENGTH + POSITION["y"], fill='#cbbeb5', width=BORDER_WIDTH, outline=BORDER_COLOR)
+  canvas.create_rectangle(POSITION["x"], POSITION["y"], LENGTH_X + POSITION["x"], LENGTH_Y + POSITION["y"], fill='#cbbeb5', width=BORDER_WIDTH, outline=BORDER_COLOR)
 
-  for i in range(NUMBER - 1):
+  for i in range(TILE_X_COUNT - 1):
     x = POSITION["x"] + SQUARE_LENGTH * (i + 1) + BORDER_WIDTH * i + BORDER_WIDTH
+    canvas.create_line(x, POSITION["y"], x, LENGTH_Y + POSITION["y"], width=BORDER_WIDTH, fill=BORDER_COLOR)
+  for i in range(TILE_Y_COUNT - 1):
     y = POSITION["y"] + SQUARE_LENGTH * (i + 1) + BORDER_WIDTH * i + BORDER_WIDTH
-    canvas.create_line(x, POSITION["y"], x, LENGTH + POSITION["y"], width=BORDER_WIDTH, fill=BORDER_COLOR)
-    canvas.create_line(POSITION["x"], y, LENGTH + POSITION["x"], y, width=BORDER_WIDTH, fill=BORDER_COLOR)
+    canvas.create_line(POSITION["x"], y, LENGTH_X + POSITION["x"], y, width=BORDER_WIDTH, fill=BORDER_COLOR)
 
 def create_canvas():
   root = tk.Tk()
-  root.geometry(f"""{LENGTH + POSITION["x"] * 2}x{LENGTH + POSITION["y"] * 2}""")
+  root.geometry(f"""{LENGTH_X + POSITION["x"] * 2}x{LENGTH_Y + POSITION["y"] * 2}""")
   root.title("2048")
-  canvas = tk.Canvas(root, width=(LENGTH + POSITION["x"]), height=(LENGTH + POSITION["y"]))
+  canvas = tk.Canvas(root, width=(LENGTH_X + POSITION["x"]), height=(LENGTH_Y + POSITION["y"]))
   canvas.place(x=0, y=0)
 
   return root, canvas
